@@ -1,0 +1,1648 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	name="asumo-v1" 
+	targetNamespace="http://www.ocrv.ru/isop/asutr/asumo/v1" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns:tns="http://www.ocrv.ru/isop/asutr/asumo/v1" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+	xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+	xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200512"
+	xmlns:ct="http://www.ocrv.ru/isop/common/types/v1">
+  
+	<wsp:Policy  wsu:Id="request:asumo-v1">
+		<sp:SupportingTokens>
+			<wsp:Policy>
+				<sp:UsernameToken sp:IncludeToken="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200512/IncludeToken/Always">
+					<wsp:Policy>
+						<sp:WssUsernameToken10/>
+					</wsp:Policy>
+				</sp:UsernameToken>
+			</wsp:Policy>
+		</sp:SupportingTokens>
+	</wsp:Policy>
+	
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://www.ocrv.ru/isop/asutr/asumo/v1">
+    		<xsd:import schemaLocation="common_v1_0.xsd" namespace="http://www.ocrv.ru/isop/common/types/v1"></xsd:import>
+            
+            <xsd:element name="getData" type="tns:GetDataType">
+                <xsd:annotation>
+                	<xsd:documentation>Запрос данных</xsd:documentation>
+                </xsd:annotation>
+		      </xsd:element>
+		      <xsd:element name="getDataResponse" type="tns:GetDataResponseType">
+		      </xsd:element>
+		       <xsd:element name="getDataFault" type="ct:CommonFaultType">
+    			</xsd:element>
+		    
+		      <xsd:complexType name="GetDataType">
+                <xsd:annotation>
+                	<xsd:documentation>Запрос</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+      		<xsd:element name="I_SYS_NAME" maxOccurs="1"
+      			minOccurs="1">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Наименование системы-получателя данных
+      				</xsd:documentation>
+      			</xsd:annotation>
+      			<xsd:simpleType>
+      				<xsd:restriction base="xsd:string">
+      					<xsd:maxLength value="40"></xsd:maxLength>
+      				</xsd:restriction>
+      			</xsd:simpleType>
+      		</xsd:element>
+      		<xsd:element name="I_MODE" maxOccurs="1" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Режим передачи данных. Допустимые значения: 1
+      					– Справочник хозяйств 2 – Справочник сборников
+      					3 – Централизованные нормы времени 4 – Местные
+      					нормы времени 5 – Справочник дат индексации 6
+      					– Технические справочники 7 – Справочник
+      					должностей
+      				</xsd:documentation>
+      			</xsd:annotation>
+      			<xsd:simpleType>
+      				<xsd:restriction base="xsd:string">
+
+      					<xsd:pattern value="\d"></xsd:pattern>
+      				</xsd:restriction>
+      			</xsd:simpleType>
+      		</xsd:element>
+      		<xsd:element name="I_DATA" type="xsd:date" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Дата, на которую передаются данные
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="I_FULL" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Форма выгрузки (полная/дельта). Допустимые
+      					значения:  'X' – полная выгрузку,  ' ' –
+      					изменения данных на дату.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      			<xsd:simpleType>
+      				<xsd:restriction base="xsd:string">
+      					<xsd:pattern value="(X)?"></xsd:pattern>
+
+      				</xsd:restriction>
+      			</xsd:simpleType>
+      		</xsd:element>
+      		<xsd:element name="I_PRICE" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Передача расценки. Допустимые значения:  'X'
+      					– с расценкой,  ' ' – значение отсутствует –
+      					без расценки.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      			<xsd:simpleType>
+      				<xsd:restriction base="xsd:string">
+      					<xsd:pattern value="(X)?"></xsd:pattern>
+      				</xsd:restriction>
+      			</xsd:simpleType>
+      		</xsd:element>
+      		<xsd:element name="I_KODSS" type="tns:KODSSSimpleType" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Код хозяйства. Перечень допустимых значений
+      					определяется полученными в режиме «Справочник
+      					хозяйств» значениями поля KODSS.
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="I_ID_SBOR" type="tns:NUMC10SimpleType" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Идентификатор сборника. Перечень допустимых
+      					значений определяется полученными в режиме
+      					«Справочник сборников» значениями поля ID .
+      				</xsd:documentation>
+      			</xsd:annotation>
+      		</xsd:element>
+      		<xsd:element name="I_PRED_ID" minOccurs="0">
+      			<xsd:annotation>
+      				<xsd:documentation>
+      					Код предприятия ЦНСИ
+      				</xsd:documentation>
+      			</xsd:annotation>
+      			<xsd:simpleType>
+      				<xsd:restriction base="xsd:string">
+      					<xsd:maxLength value="15"></xsd:maxLength>
+      				</xsd:restriction>
+      			</xsd:simpleType>
+      		</xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+
+      <xsd:complexType name="GetDataResponseType">
+      	<xsd:annotation>
+      		<xsd:documentation>Ответ</xsd:documentation>
+      	</xsd:annotation>
+      	<xsd:sequence>
+      		<xsd:element name="ISPS" type="tns:ISPSType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="ISBOR" type="tns:ISBORType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IGWORK" type="tns:IGWORKType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IWORK" type="tns:IWORKType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IELEMENT" type="tns:IELEMENType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="ISTRUCNORM"
+      			type="tns:ISTRUCNORMType" maxOccurs="unbounded" minOccurs="0">
+      		</xsd:element>
+      		<xsd:element name="IWGFACT" type="tns:IWGFACTType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="INORM_INFO" type="tns:INORMINFOType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="ITEAM" type="tns:ITEAMType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="ITOOLS_NORM"
+      			type="tns:ITOOLSNORMType" maxOccurs="unbounded" minOccurs="0">
+      		</xsd:element>
+      		<xsd:element name="INORM" type="tns:INORMType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IDATA" type="tns:IDATAType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="ITOOLS" type="tns:ITOOLSType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IMEASURES" type="tns:IMEASURESType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IPPROPERTIES"
+      			type="tns:IPPROPERTIESType" maxOccurs="unbounded" minOccurs="0">
+      		</xsd:element>
+      		<xsd:element name="IGFACT" type="tns:IGFACTType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IFACT" type="tns:IFACTType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IWFACT" type="tns:IWFACTType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="IC" type="tns:ICType" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+      		<xsd:element name="RESPONSE" type="tns:RESPONSEType" minOccurs="0"></xsd:element>
+      	</xsd:sequence>
+      </xsd:complexType>
+      
+            <xsd:complexType name="ISBORType">
+                <xsd:annotation>
+                	<xsd:documentation>Сборники типовых норм времени</xsd:documentation></xsd:annotation>
+                <xsd:sequence>
+            		<xsd:element name="ID"
+            			type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор сборника</xsd:documentation></xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="KODSS"
+            			type="tns:KODSSSimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Код хозяйства. Перечень допустимых значений определяется полученными в режиме «Справочник хозяйств» значениями поля KODSS </xsd:documentation></xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="SHORT_NAME">
+                        <xsd:annotation>
+                        	<xsd:documentation>Краткое наименование сборника.</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="40"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="NAME">
+                        <xsd:annotation>
+                        	<xsd:documentation>Наименование сборника</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="200"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="YEAR_RELEAS">
+                        <xsd:annotation>
+                        	<xsd:documentation>Год издания</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:pattern value="(\d{4})?"></xsd:pattern>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="DATE_TAKING" type="xsd:date">
+            			<xsd:annotation>
+            				<xsd:documentation>Дата принятия</xsd:documentation></xsd:annotation></xsd:element>
+            		<xsd:element name="DATE_REVISION" type="xsd:date">
+            			<xsd:annotation>
+            				<xsd:documentation>Дата пересмотра</xsd:documentation></xsd:annotation></xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="KODSSSimpleType">
+                <xsd:annotation>
+                	<xsd:documentation>Код хозяйства</xsd:documentation></xsd:annotation>
+                <xsd:restriction base="xsd:string">
+            		<xsd:maxLength value="2"></xsd:maxLength>
+            	</xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="NUMC10SimpleType">
+            	<xsd:restriction base="xsd:string">
+            		<xsd:pattern value="\d{0,10}"></xsd:pattern>
+            	</xsd:restriction>
+            </xsd:simpleType>
+    
+            <xsd:complexType name="ISPSType">
+            	<xsd:annotation>
+            		<xsd:documentation>
+            			Справочник хозяйств
+            		</xsd:documentation>
+            	</xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="KODSS"
+            			type="tns:KODSSSimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Код хозяйства
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="NAMSS">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Краткое наименование хозяйства.
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="30"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="NAMSP">
+                        <xsd:annotation>
+                        	<xsd:documentation>Полное наименование хозяйства.</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="80"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>
+    
+            <xsd:complexType name="IGWORKType">
+            	<xsd:annotation>
+            		<xsd:documentation>Группы работ</xsd:documentation>
+            	</xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="IND">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Вид изменения. Допустимые значения:  U
+            					– обновить;  I – вставить;  E –
+            					удалить (значения отдельного поля);  D
+            					– удалить.  ' ' – значение отсутствует
+            					– данные передаются полностью.
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="1"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="ID" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор группы работ</xsd:documentation></xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="KODSS"
+            			type="tns:KODSSSimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Код хозяйства
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+                    <xsd:element name="SHORT_NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Краткое наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="40"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Полное наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="200"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>
+            
+            <xsd:complexType name="IWORKType">
+            	<xsd:annotation>
+            		<xsd:documentation>Работы</xsd:documentation>
+            	</xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="IND">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Вид изменения. Допустимые значения:  U
+            					– обновить;  I – вставить;  E –
+            					удалить (значения отдельного поля);  D
+            					– удалить.  ' ' – значение отсутствует
+            					– данные передаются полностью.
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="1"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="ID"
+            			type="tns:NUMC10SimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Идентификатор работы
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="ID_G"
+            			type="tns:NUMC10SimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Идентификатор группы работ
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="KODSS"
+            			type="tns:KODSSSimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Код хозяйства
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="SHORT_NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Краткое наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="40"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Полное наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="200"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+					<xsd:element name="WGN">
+						<xsd:annotation>
+							<xsd:documentation>
+								Номер группы работ для зимних
+								коэффициентов. Ссылка на IWFACTType.
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>            
+            
+            <xsd:complexType name="IELEMENType">
+            	<xsd:annotation>
+            		<xsd:documentation>Элемент работы</xsd:documentation>
+            	</xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="IND">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Вид изменения. Допустимые значения:  U
+            					– обновить;  I – вставить;  E –
+            					удалить (значения отдельного поля);  D
+            					– удалить.  ' ' – значение отсутствует
+            					– данные передаются полностью.
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="1"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="ID" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор элемента работ</xsd:documentation>
+                        </xsd:annotation>
+            		</xsd:element>
+                    <xsd:element name="ID_W" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор работы, соответствует полю ID типа IWORKType</xsd:documentation></xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ID_G" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор группы работ</xsd:documentation></xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="KODSS"
+            			type="tns:KODSSSimpleType">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Код хозяйства
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+                    <xsd:element name="SHORT_NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Краткое наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="40"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="NAME">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Полное наименование
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="200"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+
+            	</xsd:sequence>
+            </xsd:complexType>             
+    
+            <xsd:complexType name="ISTRUCNORMType">
+                <xsd:annotation>
+                	<xsd:documentation>Состав комплексных и укрупненных норм</xsd:documentation></xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="IND">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Вид изменения. Допустимые значения:  U
+                				– обновить;  I – вставить;  E –
+                				удалить (значения отдельного поля);  D
+                				– удалить.  ' ' – значение отсутствует
+                				– данные передаются полностью.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ID"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени (INORMType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ID_CHILD"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени (INORMType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ENDDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>Конец срока действия</xsd:documentation></xsd:annotation></xsd:element>
+                	<xsd:element name="BEGDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>Начало срока действия</xsd:documentation></xsd:annotation></xsd:element>
+                	<xsd:element name="KOEFP" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>Коэффициент повторяемости</xsd:documentation></xsd:annotation></xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+        
+            <xsd:complexType name="IWGFACTType">
+                <xsd:annotation>
+                	<xsd:documentation>Отнесение групп поправочных коэффициентов к работе</xsd:documentation></xsd:annotation>
+                 <xsd:sequence>
+                <xsd:element name="ID_W" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор работы, соответствует полю ID типа IWORKType</xsd:documentation></xsd:annotation>
+                    </xsd:element>
+                    <xsd:element name="ID_FG" type="tns:NUMC10SimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификатор группы коэффициентов, соответствует полю ID типа IGFACTType</xsd:documentation>
+                        </xsd:annotation>
+                    </xsd:element>
+                 </xsd:sequence>
+            </xsd:complexType>
+            
+			<xsd:complexType name="INORMINFOType">
+                <xsd:annotation>
+                	<xsd:documentation>Общее описание к норме времени</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="IND">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Вид изменения. Допустимые значения:  U
+                				– обновить;  I – вставить;  E –
+                				удалить (значения отдельного поля);  D
+                				– удалить.  ' ' – значение отсутствует
+                				– данные передаются полностью.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ID"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени (INORMType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ENDDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>Конец срока действия</xsd:documentation></xsd:annotation></xsd:element>
+                	<xsd:element name="BEGDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>Начало срока действия</xsd:documentation></xsd:annotation></xsd:element>
+                	<xsd:element name="TEXT">
+                		<xsd:annotation>
+                			<xsd:documentation>Текст описания</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="100"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>          
+            
+            <xsd:complexType name="ITEAMType">
+                <xsd:annotation>
+                	<xsd:documentation>Состав исполнителей работ</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="IND">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Вид изменения. Допустимые значения:  U
+                				– обновить;  I – вставить;  E –
+                				удалить (значения отдельного поля);  D
+                				– удалить.  ' ' – значение отсутствует
+                				– данные передаются полностью.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ID"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени (INORMType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TIP_TEAM">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Тип состава исполнителей. Допустимые
+                				значения:  ' ' – значение отсутствует –
+                				основной состав;  1 – 1-ый
+                				альтернативный состав;  2 – 1-ой
+                				альтернативный состав.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:pattern value="(\d| )?"></xsd:pattern>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="STELL">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Должность. Перечень допустимых значений
+                				определяется полученными в режиме
+                				«Справочник должностей» (ICType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:pattern value="(\d{1,8})?"></xsd:pattern>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="RANK">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Разряд работника
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:pattern value="(\d{1,2})?"></xsd:pattern>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ENDDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Конец срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="BEGDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Начало срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="QUANT" type="xsd:int">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Количество исполнителей.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+              
+            <xsd:complexType name="ITOOLSNORMType">
+                <xsd:annotation>
+                	<xsd:documentation>Используемые инструменты в нормах</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="IND">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Вид изменения. Допустимые значения:  U
+                				– обновить;  I – вставить;  E –
+                				удалить (значения отдельного поля);  D
+                				– удалить.  ' ' – значение отсутствует
+                				– данные передаются полностью.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ID"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени (INORMType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+
+                	<xsd:element name="SEQNR">
+                        <xsd:annotation>
+                        	<xsd:documentation>Текущий номер</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:pattern value="(\d{1,3})?"></xsd:pattern>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="TOOL_ID">
+                        <xsd:annotation>
+                        	<xsd:documentation>Идентификационный номер инструмента. Перечень допустимых значений определяется полученными в режиме «Технические справочники» (ITOOLSType)</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:pattern value="(\d{1,6})?"></xsd:pattern>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ENDDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Конец срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="BEGDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Начало срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="QUANT" type="xsd:int">
+                		<xsd:annotation>
+                			<xsd:documentation>Количество применяемого инструмента</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="RULE_USE">
+                        <xsd:annotation>
+                        	<xsd:documentation>Правило применения инструмента</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="3"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+                           		
+			<xsd:complexType name="INORMType">
+                <xsd:annotation>
+                	<xsd:documentation>Нормы времени</xsd:documentation>
+                </xsd:annotation>
+                <xsd:sequence>
+                	<xsd:element name="IND">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Вид изменения. Допустимые значения:  U
+                				– обновить;  I – вставить;  E –
+                				удалить (значения отдельного поля);  D
+                				– удалить.  ' ' – значение отсутствует
+                				– данные передаются полностью.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ID"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+
+                	<xsd:element name="ENDDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Конец срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="BEGDA" type="xsd:date">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Начало срока действия
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="KODSS"
+						type="tns:KODSSSimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Код хозяйства (ISPSType)</xsd:documentation>
+                        </xsd:annotation>
+					</xsd:element>
+                	<xsd:element name="ID_G"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор группы работ (IGWORKType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ID_W"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор работы (IWORKType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ID_E"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор элемента работ
+                				(IELEMENTType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ID_PARENT"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор нормы времени
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="ID_SBOR"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Идентификатор сборника (ISBORType)
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TIP">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Тип нормы. Допустимые значения:  Т –
+                				типовая.  М – местная
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="SUBTIP">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Подтип для местных норм времени и
+                				выделение норм без разряда. Допустимые
+                				значения:  X – технически обоснованные.
+                				 '-' – без разряда.  ' ' – значение
+                				отсутствует –установленные
+                				опытно-статистическим путем.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="KLASS">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Степень укрупненности нормы. Допустимые
+                				значения:  Э – Элемент;  Е –
+                				Единичная;  У – Укрупненная;  К –
+                				Комплексная.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="2"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="NUMER">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Порядковый номер
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="5"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="KODN">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Код нормы.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="10"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="MEASURE">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Единица измерения. Перечень допустимых
+                				значений определяется полученными в
+                				режиме «Технические справочники»
+                				(IMEASURESType) значениями поля MSEHI
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="10"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="ATR_SIZE" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Объем выполняемой работы
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TRKOEF" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Тарифный коэффициент
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="RANK" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Разряд работ
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="PRICE" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Расценка
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="CHANGEA">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Признак изменяемой нормы. Допустимые
+                				значения:  X – изменяемая.  ' ' –
+                				значение отсутствует –не изменяемая.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="NTIME" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Нормативное время (в часах).
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="OPTIME" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Оперативное время (в часах).
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="FIXING_POINT">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Фиксажные точки
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="100"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="USE_WINTER">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Признак влияния времени года. Допустимые
+                				значения:  X – да.  ' ' – значение
+                				отсутствует –нет.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="USE_LEVEL">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Уровень оплаты. Допустимые значения:  1
+                				– 1-ый уровень оплаты  2 – 2-ой уровень
+                				оплаты  3 – 3-ий уровень оплаты
+                			</xsd:documentation>
+                		</xsd:annotation>
+                		<xsd:simpleType>
+                			<xsd:restriction base="xsd:string">
+                				<xsd:maxLength value="1"></xsd:maxLength>
+                			</xsd:restriction>
+                		</xsd:simpleType>
+                	</xsd:element>
+                	<xsd:element name="TPZ" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Время на подготовительно-заключительные
+                				операции.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TOB" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Время на обслуживание рабочего места.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TPT" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Время на перерывы, связанные с
+                				технологией выполнения работы.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="TOTL" type="xsd:decimal">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Время на личные надобности.
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL1"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL2"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL3"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL4"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL5"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL6"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL7"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL8"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL9"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL10"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL11"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL12"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL13"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL14"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+                	<xsd:element name="VAL15"
+                		type="tns:NUMC10SimpleType">
+                		<xsd:annotation>
+                			<xsd:documentation>
+                				Значение
+                			</xsd:documentation>
+                		</xsd:annotation>
+                	</xsd:element>
+
+                </xsd:sequence>
+			</xsd:complexType>             		
+        
+			<xsd:complexType name="IDATAType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник дат индексации
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="DATA_IND" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>Дата индексации</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="ITOOLSType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник применяемых инструментов
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="TOOL_ID">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор инструмента
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d{1,6}"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="NAME">
+                        <xsd:annotation>
+                        	<xsd:documentation>Наименование инструмента</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="100"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="IMEASURESType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Единицы измерения для нормирования
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="MSEHI">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор единицы измерения
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="3"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="MSEHL">
+                        <xsd:annotation>
+                        	<xsd:documentation>Наименование единицы измерения</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="30"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="IPPROPERTIESType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник характеристик
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="ID_PROP"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор свойства
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NAME_PROP">
+						<xsd:annotation>
+							<xsd:documentation>
+								Наименование свойства
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="80"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="ID_VAL"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор значения
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NAME_VAL">
+                        <xsd:annotation>
+                        	<xsd:documentation>Значение свойства</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="80"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="IGFACTType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник групп коэффициентов
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="ID_FG"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор группы коэффициентов
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="NAME_FG">
+						<xsd:annotation>
+							<xsd:documentation>
+								Наименование группы
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="200"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="SNAME_FG">
+						<xsd:annotation>
+							<xsd:documentation>
+								Краткое наименование
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="60"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="ID_SBOR"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор сборника. Перечень
+								допустимых значений определяется
+								полученными в режиме «Справочник
+								сборников» (SBORType)
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="KODSS"
+						type="tns:KODSSSimpleType">
+                        <xsd:annotation>
+                        	<xsd:documentation>Код хозяйства (ISPSType)</xsd:documentation>
+                        </xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="IFACTType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник коэффициентов
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="ID_FG"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор группы коэффициентов,
+								соответствует полю ID_FG (IGFACTType)
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ID_F"
+						type="tns:NUMC10SimpleType">
+						<xsd:annotation>
+							<xsd:documentation>
+								Идентификатор коэффициента
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="ENDDA" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>
+								Конец срока действия
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="BEGDA" type="xsd:date">
+						<xsd:annotation>
+							<xsd:documentation>
+								Начало срока действия
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="DESCR">
+						<xsd:annotation>
+							<xsd:documentation>
+								Описание условия
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:maxLength value="200"></xsd:maxLength>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="TIME_FACT" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>
+								Коэффициент повышающий время выполнения
+								работ
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+					<xsd:element name="QOUT_FACT" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>
+								Коэффициент увеличивающий расценку за
+								работу.
+							</xsd:documentation>
+						</xsd:annotation>
+					</xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+			<xsd:complexType name="IWFACTType">
+				<xsd:annotation>
+					<xsd:documentation>
+						Справочник зимних коэффициентов
+					</xsd:documentation>
+				</xsd:annotation>
+				<xsd:sequence>
+					<xsd:element name="TZONE">
+						<xsd:annotation>
+							<xsd:documentation>
+								Температурная зона
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="WGN">
+						<xsd:annotation>
+							<xsd:documentation>
+								Номер группы работ для зимних
+								коэффициентов
+							</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="MES1">
+						<xsd:annotation>
+							<xsd:documentation>Месяц</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d{1,2}"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="MES2">
+						<xsd:annotation>
+							<xsd:documentation>Месяц</xsd:documentation>
+						</xsd:annotation>
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:pattern value="\d{1,2}"></xsd:pattern>
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:element>
+					<xsd:element name="WFACT_VAL" type="xsd:decimal">
+						<xsd:annotation>
+							<xsd:documentation>Зимний коэффициент</xsd:documentation></xsd:annotation></xsd:element>
+				</xsd:sequence>
+			</xsd:complexType>
+    
+        
+            <xsd:complexType name="ICType">
+            	<xsd:annotation>
+            		<xsd:documentation>Справочник должностей</xsd:documentation></xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="STELL">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Идентификатор объекта
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:pattern value="(\d{1,8})?"></xsd:pattern>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="BEGDA" type="xsd:date">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Начальная дата
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+            		<xsd:element name="ENDDA" type="xsd:date">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Конечная дата
+            				</xsd:documentation>
+            			</xsd:annotation>
+            		</xsd:element>
+
+            		<xsd:element name="SHORT">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Код объекта
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="12"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="STEXT">
+                        <xsd:annotation>
+                        	<xsd:documentation>Название объекта</xsd:documentation></xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="40"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>
+            		
+        
+            <xsd:complexType name="RESPONSEType">
+            	<xsd:annotation>
+            		<xsd:documentation>
+            			Результат выполнения
+            		</xsd:documentation>
+            	</xsd:annotation>
+            	<xsd:sequence>
+            		<xsd:element name="RETCODE">
+            			<xsd:annotation>
+            				<xsd:documentation>
+            					Тип сообщения. Допустимые значения: 
+            					S-успешно,  E-ошибка, 
+            					W-предупреждение.
+            				</xsd:documentation>
+            			</xsd:annotation>
+            			<xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="1"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            		<xsd:element name="MESSAGE">
+                        <xsd:annotation>
+                        	<xsd:documentation>Текст сообщения
+E	0	По запрошенному коду предприятия ЦНСИ ОЕ не найдена
+W	1	По запрошенному коду предприятия ЦНСИ отсутствуют нормы времени
+S	2	Данные успешно переданы
+W	3	По запрошенным параметрам данные отсутствуют
+W	4	Изменения по запрошенным данным отсутствуют
+W	5	По запрошенному коду предприятия ЦНСИ изменения отсутствуют
+</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:simpleType>
+            				<xsd:restriction base="xsd:string">
+            					<xsd:maxLength value="220"></xsd:maxLength>
+            				</xsd:restriction>
+            			</xsd:simpleType>
+            		</xsd:element>
+            	</xsd:sequence>
+            </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getDataRequest">
+    <wsdl:part element="tns:getData" name="parameters"/>
+  </wsdl:message>
+  <wsdl:message name="getDataResponse">
+    <wsdl:part element="tns:getDataResponse" name="parameters"/>
+  </wsdl:message>
+    <wsdl:message name="getDataFault">
+  	<wsdl:part element="tns:getDataFault" name="parameters"/>
+  </wsdl:message>
+  <wsdl:portType name="asumo-v1">
+    <wsdl:operation name="getData">
+      <wsdl:input message="tns:getDataRequest"/>
+      <wsdl:output message="tns:getDataResponse"/>
+      <wsdl:fault message="tns:getDataFault" name="fault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="asumo-v1SOAP" type="tns:asumo-v1">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getData">
+      <soap:operation soapAction="http://www.ocrv.ru/isop/asutr/asumo/v1/NewOperation"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="asumo-v1">
+	<wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#request:asumo-v1"/>
+    <wsdl:port binding="tns:asumo-v1SOAP" name="asumo-v1SOAP">
+      <soap:address location="http://www.example.org/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
